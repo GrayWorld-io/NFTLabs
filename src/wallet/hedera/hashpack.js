@@ -1,8 +1,5 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import App from './App'
+import { Transaction, TransactionId } from "@hashgraph/sdk"
 
-import {initializeHashPackWallet} from './wallet/hedera/hashpack'
 import { HashConnect, HashConnectTypes, MessageTypes } from 'hashconnect';
 
 let hashconnect;
@@ -30,10 +27,10 @@ function saveDataInLocalstorage() {
 
 function setUpEvents() {
 
-  hashconnect.foundExtensionEvent.on((data) => {
-    availableExtensions.push(data);
-    console.log("Found extension", data);
-  })
+  // hashconnect.foundExtensionEvent.on((data) => {
+  //   availableExtensions.push(data);
+  //   console.log("Found extension", data);
+  // })
 
   // hashconnect.transactionResponseEvent.on((data) => {
   //   // console.log("transaction response", data)
@@ -84,25 +81,44 @@ function loadLocalData() {
     return false;
 }
 
-// Initialize contract & set global variables
-export async function initializeWallet() {
-  const hashPack = await initializeHashPackWallet();
-  hashconnect = hashPack.hashConnect;
-  saveData = hashPack.saveData;
-  // Get network configuration values from config.js
-  // const nearConfig = getConfig('development')
+export async function initializeHashPackWallet() {
+  hashconnect = new HashConnect(true);
+  
+  if (!loadLocalData()) {
 
-  return { hashconnect, saveData }
+    const initData = await hashconnect.init(appMetadata);
+    saveData.privateKey = initData.privKey;
+    //then connect, storing the new topic in localstorage
+    const state = await hashconnect.connect();
+    saveData.topic = state.topic;
+    
+    hashconnect.findLocalWallets();
+    //generate a pairing string, which you can display and generate a QR code from
+    saveData.pairingString = hashconnect.generatePairingString(state, "testnet", false);
+    status = "Connected";
+  } else {
+    await hashconnect.init(appMetadata, saveData.privateKey);
+    await hashconnect.connect(saveData.topic, saveData.pairedWalletData);
+
+    status = "Paired";
+  }
+
+  setUpEvents();
+
+  return {
+    hashConnect: hashconnect,
+    saveData: saveData
+  }
 }
 
-window.nearInitPromise = initializeWallet()
-  .then(({ }) => {
-    ReactDOM.render(
-      <App
-        wallet={hashconnect}
-        walletData={saveData}
-      />,
-      document.querySelector('#root')
-    )
-  })
-  .catch(console.error)
+export function buildTransaction(tx, walletData, sendServer) {
+  const transaction = {
+    topic: walletData.topic,
+    byteArray: tx,
+    metadata: {
+        accountToSign: walletData.pairedAccounts[0],
+        returnTransaction: sendServer
+    }
+  }
+  return transaction;
+}

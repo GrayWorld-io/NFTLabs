@@ -1,32 +1,52 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useAsync } from "react-async"
+import axios from 'axios';
 import './mint.css';
-import nft_1 from '../../assets/minting-now-assets/nft_1.png'
-import * as nearAPI from 'near-api-js';
-import { provider } from '../../utils';
+import nft_1 from '../../assets/header-assets/1.png'
+// import * as nearAPI from 'near-api-js';
 import getConfig from '../../config'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export const {
-	utils: {
-		format: {
-			formatNearAmount, parseNearAmount
-		}
-	}
-} = nearAPI;
+import { buildTransaction } from '../../wallet/hedera/hashpack';
+import { RiAlignVertically } from 'react-icons/ri';
 
 const toastId = "preventDuplicateId"
 
 const mintData = {
-    name: "Monkey Business Collection",
-    description: "Where 500 randomly generated NFTs on the NEAR blockchain generating $BANANA. Your NFT itself doubles as membership to Big Balla Chimps with exclusive access to a well-structured community, limited merchandise, web-casino, events, and other collections such as Big Balla Mutants. Our goal is to help anyone break their way into the NFT world successfully while having fun."
+    name: "GrayWorld Freshman",
+    description: "This is GrayWorld NFT!"
 }
 
-const Mint = ({ currentUser, login, contract, wallet, logout }) => {
+let currentAccount = null;
+
+const checkMintable = async (accountId) => {
+    const checkMintUrl = 'http://localhost:9092/mint/checkMintable'
+    const checkMintData = {
+        network: "hedera",
+        project: "freshman",
+        accountId: accountId.accountId
+    }
+    let res = await axios.post(checkMintUrl, checkMintData, {
+        headers: { "Content-Type": `application/json` }
+    });
+    return res.data.result;
+}
+const Mint = ({ login, wallet, logout, walletData }) => {
     const [nftMedia, setNftMedia] = useState('')
-    const nearConfig = getConfig('development')
+    const [mintable, setMintable] = useState(false);
+
+    // const nearConfig = getConfig('development')
+    if (walletData.pairedAccounts.length > 0) {
+        currentAccount = walletData.pairedAccounts[0];
+    }
+    const { data, error, isLoading } = useAsync({ promiseFn: checkMintable, accountId: currentAccount });
+    useEffect(() => {
+        setMintable(data);
+    })
+
     const handleConnectWallet = () => {
-        if (!currentUser) {
+        if (walletData.pairedAccounts.length < 1) {
             login()
         }
         else {
@@ -34,77 +54,110 @@ const Mint = ({ currentUser, login, contract, wallet, logout }) => {
         }
     }
 
-    const account = wallet.account();
-
-    // When user clicks mint button
-    const handleMint = async () => {
-        await account.functionCall(
-            nearConfig.contractName,
-            'nft_mint',
-            { receiver_id: currentUser.accountId },
-            "200000000000000",
-            parseNearAmount('1.1'))
-    }
-
-    // Function to get NFT TOKEN METADATA.
-    const getNftImage = async (tokenId) => {
-        const nftTokenMetadata = await contract.nft_token_metadata({ token_id: tokenId})    
-        const media = nftTokenMetadata.media
-
-        setNftMedia(media)
-        toast.success("Mint successful! Check your NEAR wallet for new mint.", {
-            toastId: toastId
+    const handleAssociate = async () => {
+        const getTxUrl = 'http://localhost:9092/token/getAssociateTx'
+        const requestMintData = {
+            network: "hedera",
+            project: "freshman",
+            accountId: walletData.pairedAccounts[0]
+        }
+        let res = await axios.post(getTxUrl, requestMintData, {
+            headers: { "Content-Type": `application/json` }
         });
+        console.log(res);
+        const rawTx = res.data.tx;
+        const tx = buildTransaction(rawTx, walletData, false);
+        await wallet.sendTransaction(walletData.topic, tx);
     }
 
-    // Function to get the token ID
-    // token_id will be passed into testFunc params below to get contract
-    const getTokenId = async (txHash, accountId) => {
-        const result = await provider.txStatus(txHash, accountId)
-        const receipts_outcome = result.receipts_outcome;
-
-        const logs = receipts_outcome[0].outcome.logs[0]
-
-        const jsonString = logs.split(/:(.*)/s)
-        const json = JSON.parse(jsonString[1])
-        
-        const token_id = json.data[0].token_ids[0]  // No null check here.
-
-        if (token_id) {
-            getNftImage(token_id)
+    // const account = wallet.account();
+    const handleClaim = async () => {
+        const getTxUrl = 'http://localhost:9092/mint/claim'
+        const requestMintData = {
+            network: "hedera",
+            project: "freshman",
+            accountId: walletData.pairedAccounts[0]
+        }
+        let res = await axios.post(getTxUrl, requestMintData, {
+            headers: { "Content-Type": `application/json` }
+        });
+        console.log(res);
+        const rawTx = res.data.tx;
+        const tx = buildTransaction(rawTx, walletData, false);
+        const claimResult = await wallet.sendTransaction(walletData.topic, tx);
+        // console.log(claimResult);
+        if (claimResult.success) {
+            const updateClaimStatusUrl = 'http://localhost:9092/mint/claim/status'
+            const requestUpdateClaimStatusData = {
+                network: "hedera",
+                project: "freshman",
+                accountId: walletData.pairedAccounts[0],
+                status: true
+            }
+            axios.post(updateClaimStatusUrl, requestUpdateClaimStatusData, {
+                headers: { "Content-Type": `application/json` }
+            });
+            window.location.reload();
         }
     }
 
-    // After handleMint, page will re-render with txhash in the url params. Check for txhash
-    const queryParams = new URLSearchParams(window.location.search);
-    const txHash = queryParams.get('transactionHashes')
-    if (txHash && currentUser) {
-        getTokenId(txHash, currentUser.accountId)
+    // When user clicks mint button
+    const handleMint = async () => {
+        const getTxUrl = 'http://localhost:9092/mint/getTx'
+        const requestMintData = {
+            network: "hedera",
+            project: "freshman",
+            accountId: walletData.pairedAccounts[0]
+        }
+        let res = await axios.post(getTxUrl, requestMintData, {
+            headers: { "Content-Type": `application/json` }
+        });
+        console.log(res);
+        const rawTx = res.data.tx;
+        const tx = buildTransaction(rawTx, walletData, true);
+        const signedTx = await wallet.sendTransaction(walletData.topic, tx);
+        const requestMintUrl = 'http://localhost:9092/mint/sendTx'
+        const sendMintData = {
+            network: "hedera",
+            project: "freshman",
+            accountId: walletData.pairedAccounts[0],
+            signedTx: signedTx
+        }
+        await axios.post(requestMintUrl, sendMintData, {
+            headers: { "Content-Type": `application/json` }
+        });
+        // const mintResult = res.data.result;
+        window.location.reload();
     }
 
     return (
         <div className='very-near__mint section__padding'>
             <div className='content'>
                 <h1>{mintData.name}</h1>
-                <div className='poweredBy'>
+                {/* <div className='poweredBy'>
                     <button>Powered by <span className="gradient__text" >VeryNear</span></button>
-                </div>
+                </div> */}
                 <p>{mintData.description}</p>
-                {currentUser ? (
+                {currentAccount !== null ? (
                     <>
-                    <div className="actionButtonWrapper">
-                        <button onClick={() => handleMint()}>{ txHash ? 'Mint Again' : 'Mint'}</button>
-                    </div>
-                    <div className="actionButtonWrapperDisconnect">
-                    <button onClick={() => handleConnectWallet()}>Disconnect Wallet</button>
-                    </div>
+                        <div className="actionButtonWrapper">
+                            <button onClick={() => handleAssociate()}>Token Associate</button>
+                        </div>
+                        <div className="actionButtonWrapper">
+                            {
+                                mintable === true ?
+                                    <button onClick={() => handleMint()}>{'Mint'}</button>
+                                    :
+                                    <button onClick={() => handleClaim()}>{'Claim'}</button>
+                            }
+                        </div>
                     </>
                 ) : (
                     <div className="actionButtonWrapper">
                         <button onClick={() => handleConnectWallet()}>Connect Wallet</button>
                     </div>
                 )}
-                 <a href='https://uphold.com/en-us/assets/crypto/buy-near' className='buyNearLink' target="_blank">No NEAR? Buy here.</a>
+                {/* <a href='https://uphold.com/en-us/assets/crypto/buy-near' className='buyNearLink' target="_blank">No NEAR? Buy here.</a> */}
             </div>
 
             { nftMedia ? (

@@ -21,7 +21,7 @@ const ImageSlider = ({ slides, showOptionsFunc }) => {
   }
 
   const mintPage = () => {
-    let path = '/mint/monkeyBusiness'
+    let path = '/mint/freshman'
     history.push(path);
     showOptionsFunc(false)
 
@@ -45,6 +45,7 @@ const ImageSlider = ({ slides, showOptionsFunc }) => {
           </div>
         );
       })}
+      
     </section>
   );
 };

@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 const NFT = ({ showOptionsFunc, imgUrl }) => {
   const history = useHistory();
   const mintPage = () => {
-    let path = '/mint/monkeyBusiness'
+    let path = '/mint/freshman'
     history.push(path);
     showOptionsFunc(false)
   }

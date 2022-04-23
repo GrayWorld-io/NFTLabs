@@ -11,16 +11,16 @@ function Navbar({ showOptions, showOptionsFunc }) {
 
   function checkPath(source) {
     if (source === "home") {
-      showOptionsFunc(true)
+      // showOptionsFunc(true)
     }
     else {
-      showOptionsFunc(false)
+      // showOptionsFunc(true)
     }
   }
 
   useEffect(() => {
     if (window.location.pathname === "/") {
-      showOptionsFunc(true)
+      // showOptionsFunc(true)
     }
   },
     []
@@ -35,6 +35,7 @@ function Navbar({ showOptions, showOptionsFunc }) {
   function Menu() {
     return (
       <>
+{/* 
         {showOptions ? <p><a href="#header">Home</a></p> : <p><NavLink exact to="/" onClick={() => checkPath("home")}>Home</NavLink></p>}
         {
           showOptions ?
@@ -42,12 +43,19 @@ function Navbar({ showOptions, showOptionsFunc }) {
               <p><a href="#minting-now">Minting Now</a></p>
               <p><a href="#upcoming">Upcoming</a></p>
               <p><a href="#past-mints">Past Mints</a></p>
-              <p><a href="#about-us">About Us</a></p>
+              <p><a href="#about-us">Apply</a></p>
             </>
             :
             ""
         }
-        <p><NavLink exact to="/create" onClick={() => checkPath("create")}>Create</NavLink></p>
+         */}
+
+        <p><NavLink exact to="/" onClick={() => checkPath("home")}>Home</NavLink></p>
+        <>
+              <p><a href="#gray-nft">Gray NFT</a></p>
+              <p><a href="#labs-nft">Labs NFT</a></p>
+              <p><a href="#apply">Apply</a></p>
+            </>
       </>
     )
   }
@@ -56,7 +64,7 @@ function Navbar({ showOptions, showOptionsFunc }) {
     <div className="very-near__navbar">
       <div className="very-near__navbar-links">
         <div className="very-near__navbar-links_logo">
-          <img src={logo} onClick={() => homePage()} />
+          {/* <img src={logo} onClick={() => homePage()} /> */}
         </div>
         <div className="very-near__navbar-links_container">
           <Menu />

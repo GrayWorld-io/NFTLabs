@@ -30,6 +30,12 @@
   grid-gap: 3rem;
 }
 
+.item_info {
+  color: white;
+  margin-top: 0.5rem;
+  margin-left: 0.5rem;
+}
+
 @media screen and (max-width: 990px) {
   .very-near__nft-container-container {
       flex-direction: column-reverse;

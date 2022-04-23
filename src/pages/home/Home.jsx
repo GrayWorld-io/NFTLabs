@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../../components/homePage/header/Header";
-import MintingNow from "../../components/homePage/minting-now/MintingNow";
-import Upcoming from '../../components/homePage/upcoming/Upcoming';
+import LabsNFT from "../../components/homePage/labs-nft/LabsNFT";
+import GrayNFT from '../../components/homePage/gray-nft/GrayNFT';
 import PastMints from '../../components/homePage/past-mints/PastMints';
 import LauchSteps from '../../components/homePage/launch-steps/LaunchSteps';
 import AboutUs from '../../components/homePage/about-us/AboutUs';
@@ -11,10 +11,8 @@ function Home({ showOptionsFunc, currentUser, login }) {
   return (
     <div style={{ paddingTop: '46px' }}>
       <Header showOptionsFunc={showOptionsFunc} />
-      <MintingNow showOptionsFunc={showOptionsFunc} />
-      <Upcoming showOptionsFunc={showOptionsFunc} />
-      <PastMints showOptionsFunc={showOptionsFunc} />
-      <AboutUs showOptionsFunc={showOptionsFunc} />
+      <GrayNFT showOptionsFunc={showOptionsFunc} />
+      <LabsNFT showOptionsFunc={showOptionsFunc} />
     </div>
   );
 }
