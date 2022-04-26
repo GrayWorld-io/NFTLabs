@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAsync } from "react-async"
 import axios from 'axios';
 import './mint.css';
-import nft_1 from '../../assets/header-assets/1.png'
+import nft_1 from '../../assets/gray-assets/seminar/gold.gif'
 // import * as nearAPI from 'near-api-js';
 import getConfig from '../../config'
 import { ToastContainer, toast } from "react-toastify";
@@ -14,8 +14,8 @@ import { RiAlignVertically } from 'react-icons/ri';
 const toastId = "preventDuplicateId"
 
 const mintData = {
-    name: "GrayWorld Freshman",
-    description: "This is GrayWorld NFT!"
+    name: "NFT의 모든 것 세미나 수강 기념 NFT",
+    description: "Gray의 NFT 세미나 수강자 대상으로 기념으로 증정하는 NFT입니다."
 }
 
 let currentAccount = null;

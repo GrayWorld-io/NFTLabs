@@ -4,13 +4,20 @@ import nft_3 from '../../../assets/header-assets/3.png'
 import nft_4 from '../../../assets/header-assets/4.png'
 import nft_5 from '../../../assets/header-assets/5.png'
 import nft_6 from '../../../assets/header-assets/6.png'
+import gold from '../../../assets/gray-assets/seminar/gold.gif'
+import silver from '../../../assets/gray-assets/seminar/silver.gif'
 
+// export const SliderData = 
+//   [
+//     nft_4,
+//     nft_1,
+//     nft_2,
+//     nft_3,
+//     nft_5,
+//     nft_6,
+//   ];
 export const SliderData = 
   [
-    nft_4,
-    nft_1,
-    nft_2,
-    nft_3,
-    nft_5,
-    nft_6,
+    gold,
+    silver
   ];

@@ -23,7 +23,7 @@ const NFTContainer = ({ images, title, source, showOptionsFunc }) => {
                 <div className="very-near__nft" key={index}>
                   <div className="very-near__nft-image">
                     <ImageSlider slides={group} showOptionsFunc={showOptionsFunc} />
-                    <div className="item_info">Name: Freshman</div>
+                    <div className="item_info">Name: Seminar Souvenir </div>
                     <div className="item_info">Status: Open</div>
                   </div>
                 </div>

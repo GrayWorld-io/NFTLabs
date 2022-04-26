@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "license": "UNLICENSED",
   "scripts": {
-    "build": "npm run build:web",
+    "build": "parcel build src/index.html --public-url ./",
     "deploy": "npm run build && npm run deploy:contract && npm run deploy:pages",
     "start": "parcel src/index.html --open --https",
     "dev": "nodemon --watch contract/src -e rs --exec \"npm run start\"",
