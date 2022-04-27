@@ -10,19 +10,14 @@ import nft_9 from '../../../assets/upcoming-assets/nft_9.png'
 
 export default
 [
-  [
-    nft_1,
-    nft_2,
-    nft_3
-  ],
-  [
-    nft_4,
-    nft_5,
-    nft_6
-  ],
-  [
-    nft_7,
-    nft_8,
-    nft_9
-  ]
+  {
+    "image": [nft_1,nft_2,nft_3],
+    "name": "Seminar Souvenir #1",
+    "status": "Private Open now"
+  },
+  {
+    "image": [nft_4, nft_5, nft_6],
+    "name": "Seminar Souvenir #2",
+    "status": "Private Open Soon"
+  }
 ];

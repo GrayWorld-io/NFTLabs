@@ -5,6 +5,7 @@ import './nft-container.css';
 import '../NFT/nft.css'
 
 const NFTContainer = ({ images, title, source, showOptionsFunc }) => {
+  console.log(images);
   return (
     <div className="very_near__nft-container section__padding">
       <div className="very-near__nft-container-heading">
@@ -22,9 +23,9 @@ const NFTContainer = ({ images, title, source, showOptionsFunc }) => {
                 return (
                 <div className="very-near__nft" key={index}>
                   <div className="very-near__nft-image">
-                    <ImageSlider slides={group} showOptionsFunc={showOptionsFunc} />
-                    <div className="item_info">Name: Seminar Souvenir </div>
-                    <div className="item_info">Status: Open</div>
+                    <ImageSlider slides={group.image} showOptionsFunc={showOptionsFunc} />
+                    <div className="item_info">{group.name} </div>
+                    <div className="item_info">{group.status}</div>
                   </div>
                 </div>
                 )

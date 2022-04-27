@@ -12,7 +12,6 @@ import { buildTransaction } from '../../wallet/hedera/hashpack';
 import { RiAlignVertically } from 'react-icons/ri';
 
 const toastId = "preventDuplicateId"
-
 const mintData = {
     name: "NFT의 모든 것 세미나 수강 기념 NFT",
     description: "Gray의 NFT 세미나 수강자 대상으로 기념으로 증정하는 NFT입니다."
@@ -75,7 +74,7 @@ const Mint = ({ login, wallet, logout, walletData }) => {
         const getTxUrl = 'http://localhost:9092/mint/claim'
         const requestMintData = {
             network: "hedera",
-            project: "freshman",
+            project: "gray_seminar_1",
             accountId: walletData.pairedAccounts[0]
         }
         let res = await axios.post(getTxUrl, requestMintData, {
@@ -166,7 +165,7 @@ const Mint = ({ login, wallet, logout, walletData }) => {
                 </div>
             ) : (
                 <div className='very-near__mint-image'>
-                    <img src={nft_1} alt={mintData.name} height='560px' width='560px' />
+                    <img src='https://labs.grayworld.io:9092/gold.gif' alt={mintData.name} height='560px' width='560px' />
                 </div>
             )}
             <ToastContainer
