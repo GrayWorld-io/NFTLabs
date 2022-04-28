@@ -94,7 +94,7 @@ export async function initializeHashPackWallet() {
     
     hashconnect.findLocalWallets();
     //generate a pairing string, which you can display and generate a QR code from
-    saveData.pairingString = hashconnect.generatePairingString(state, "testnet", false);
+    saveData.pairingString = hashconnect.generatePairingString(state, "mainnet", false);
     status = "Connected";
   } else {
     await hashconnect.init(appMetadata, saveData.privateKey);

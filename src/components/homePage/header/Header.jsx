@@ -7,7 +7,7 @@ import { useHistory } from "react-router-dom";
 function Header({ showOptionsFunc }) {
   const history = useHistory();
   function showApplyDialog() {
-    // let path = '/mint/freshman'
+    // let path = '/mint/gray_seminar_1'
     // history.push(path);
     alert("Please email to gray@grayworld.io")
   }

@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { buildTransaction } from '../../wallet/hedera/hashpack';
 import { RiAlignVertically } from 'react-icons/ri';
 
+const BASE_URL = process.env.REACT_APP_BASE_URL
 const toastId = "preventDuplicateId"
 const mintData = {
     name: "NFT의 모든 것 세미나 수강 기념 NFT",
@@ -20,10 +21,10 @@ const mintData = {
 let currentAccount = null;
 
 const checkMintable = async (accountId) => {
-    const checkMintUrl = 'http://localhost:9092/mint/checkMintable'
+    const checkMintUrl = `${BASE_URL}/mint/checkMintable`
     const checkMintData = {
         network: "hedera",
-        project: "freshman",
+        project: "gray_seminar_1",
         accountId: accountId.accountId
     }
     let res = await axios.post(checkMintUrl, checkMintData, {
@@ -54,10 +55,10 @@ const Mint = ({ login, wallet, logout, walletData }) => {
     }
 
     const handleAssociate = async () => {
-        const getTxUrl = 'http://localhost:9092/token/getAssociateTx'
+        const getTxUrl = `${BASE_URL}/token/getAssociateTx`
         const requestMintData = {
             network: "hedera",
-            project: "freshman",
+            project: "gray_seminar_1",
             accountId: walletData.pairedAccounts[0]
         }
         let res = await axios.post(getTxUrl, requestMintData, {
@@ -71,7 +72,7 @@ const Mint = ({ login, wallet, logout, walletData }) => {
 
     // const account = wallet.account();
     const handleClaim = async () => {
-        const getTxUrl = 'http://localhost:9092/mint/claim'
+        const getTxUrl = `${BASE_URL}/mint/claim`
         const requestMintData = {
             network: "hedera",
             project: "gray_seminar_1",
@@ -84,12 +85,12 @@ const Mint = ({ login, wallet, logout, walletData }) => {
         const rawTx = res.data.tx;
         const tx = buildTransaction(rawTx, walletData, false);
         const claimResult = await wallet.sendTransaction(walletData.topic, tx);
-        // console.log(claimResult);
+        console.log(claimResult);
         if (claimResult.success) {
-            const updateClaimStatusUrl = 'http://localhost:9092/mint/claim/status'
+            const updateClaimStatusUrl = `${BASE_URL}/mint/claim/status`
             const requestUpdateClaimStatusData = {
                 network: "hedera",
-                project: "freshman",
+                project: "gray_seminar_1",
                 accountId: walletData.pairedAccounts[0],
                 status: true
             }
@@ -102,10 +103,10 @@ const Mint = ({ login, wallet, logout, walletData }) => {
 
     // When user clicks mint button
     const handleMint = async () => {
-        const getTxUrl = 'http://localhost:9092/mint/getTx'
+        const getTxUrl = `${BASE_URL}/mint/getTx`
         const requestMintData = {
             network: "hedera",
-            project: "freshman",
+            project: "gray_seminar_1",
             accountId: walletData.pairedAccounts[0]
         }
         let res = await axios.post(getTxUrl, requestMintData, {
@@ -113,12 +114,16 @@ const Mint = ({ login, wallet, logout, walletData }) => {
         });
         console.log(res);
         const rawTx = res.data.tx;
+        if (rawTx == false) {
+            alert('Minting은 1개만 가능합니다');
+            return;
+        }
         const tx = buildTransaction(rawTx, walletData, true);
         const signedTx = await wallet.sendTransaction(walletData.topic, tx);
-        const requestMintUrl = 'http://localhost:9092/mint/sendTx'
+        const requestMintUrl = `${BASE_URL}/mint/sendTx`
         const sendMintData = {
             network: "hedera",
-            project: "freshman",
+            project: "gray_seminar_1",
             accountId: walletData.pairedAccounts[0],
             signedTx: signedTx
         }

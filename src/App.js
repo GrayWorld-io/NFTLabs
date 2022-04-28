@@ -31,19 +31,6 @@ export default function App({ wallet, walletData }) {
     window.location.reload();
   }
 
-  const checkMintable = async () => {
-    const checkMintUrl = 'http://localhost:9092/mint/checkMintable'
-    const checkMintData = {
-        network: "hedera",
-        project: "freshman",
-        accountId: walletData.pairedAccounts[0]
-    }
-    let res = await axios.post(checkMintUrl, checkMintData, {
-        headers: { "Content-Type": `application/json` }
-    });
-    return res.data.result;
-  }
-  
   return (
     <div className='App'>
       <Router>
@@ -54,7 +41,7 @@ export default function App({ wallet, walletData }) {
         <Switch>
           <Route path="/" exact><Home showOptions={showOptions}  showOptionsFunc={setShowOptions} login={login} /></Route>
           <Route path="/create"><Create /></Route>
-          <Route path="/mint/freshman"><Mint login={login} wallet={wallet} logout={logout} walletData={walletData}/></Route>
+          <Route path="/mint/gray_seminar_1"><Mint login={login} wallet={wallet} logout={logout} walletData={walletData}/></Route>
         </Switch>
       </Router>
     </div>

@@ -21,7 +21,7 @@ const ImageSlider = ({ slides, showOptionsFunc }) => {
   }
 
   const mintPage = () => {
-    let path = '/mint/freshman'
+    let path = '/mint/gray_seminar_1'
     history.push(path);
     showOptionsFunc(false)
 
