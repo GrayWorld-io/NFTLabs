@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useAsync } from "react-async"
 import axios from 'axios';
 import './mint.css';
-import nft_1 from '../../assets/gray-assets/seminar/gold.gif'
-// import * as nearAPI from 'near-api-js';
 import getConfig from '../../config'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -19,12 +17,12 @@ const mintData = {
 }
 
 let currentAccount = null;
-
+const projectName = 'gray_seminar_2';
 const checkMintable = async (accountId) => {
     const checkMintUrl = `${BASE_URL}/mint/checkMintable`
     const checkMintData = {
         network: "hedera",
-        project: "gray_seminar_1",
+        project: projectName,
         accountId: accountId.accountId
     }
     let res = await axios.post(checkMintUrl, checkMintData, {
@@ -58,7 +56,7 @@ const Mint = ({ login, wallet, logout, walletData }) => {
         const getTxUrl = `${BASE_URL}/token/getAssociateTx`
         const requestMintData = {
             network: "hedera",
-            project: "gray_seminar_1",
+            project: projectName,
             accountId: walletData.pairedAccounts[0]
         }
         let res = await axios.post(getTxUrl, requestMintData, {
@@ -75,7 +73,7 @@ const Mint = ({ login, wallet, logout, walletData }) => {
         const getTxUrl = `${BASE_URL}/mint/claim`
         const requestMintData = {
             network: "hedera",
-            project: "gray_seminar_1",
+            project: projectName,
             accountId: walletData.pairedAccounts[0]
         }
         let res = await axios.post(getTxUrl, requestMintData, {
@@ -90,7 +88,7 @@ const Mint = ({ login, wallet, logout, walletData }) => {
             const updateClaimStatusUrl = `${BASE_URL}/mint/claim/status`
             const requestUpdateClaimStatusData = {
                 network: "hedera",
-                project: "gray_seminar_1",
+                project: projectName,
                 accountId: walletData.pairedAccounts[0],
                 status: true
             }
@@ -106,7 +104,7 @@ const Mint = ({ login, wallet, logout, walletData }) => {
         const getTxUrl = `${BASE_URL}/mint/getTx`
         const requestMintData = {
             network: "hedera",
-            project: "gray_seminar_1",
+            project: projectName,
             accountId: walletData.pairedAccounts[0]
         }
         let res = await axios.post(getTxUrl, requestMintData, {
@@ -123,7 +121,7 @@ const Mint = ({ login, wallet, logout, walletData }) => {
         const requestMintUrl = `${BASE_URL}/mint/sendTx`
         const sendMintData = {
             network: "hedera",
-            project: "gray_seminar_1",
+            project: projectName,
             accountId: walletData.pairedAccounts[0],
             signedTx: signedTx
         }
@@ -170,7 +168,7 @@ const Mint = ({ login, wallet, logout, walletData }) => {
                 </div>
             ) : (
                 <div className='very-near__mint-image'>
-                    <img src='https://labs.grayworld.io:9092/gold.gif' alt={mintData.name} height='560px' width='560px' />
+                    <img src='https://labs.grayworld.io:9092/allcoin-gold.gif' alt={mintData.name} height='560px' width='560px' />
                 </div>
             )}
             <ToastContainer

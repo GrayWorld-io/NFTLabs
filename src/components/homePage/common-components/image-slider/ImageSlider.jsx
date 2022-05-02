@@ -20,11 +20,15 @@ const ImageSlider = ({ slides, showOptionsFunc }) => {
     return null;
   }
 
-  const mintPage = () => {
-    let path = '/mint/gray_seminar_1'
-    history.push(path);
-    showOptionsFunc(false)
-
+  const mintPage = (name) => {
+    if (name.includes('allnft')) {
+      alert('Seminar Souvenir #1 민팅은 마감되었습니다')
+    } else {
+      let path = '/mint/gray_seminar'
+      history.push(path);
+      showOptionsFunc(false)
+    }
+      
   }
 
   return (
@@ -39,7 +43,7 @@ const ImageSlider = ({ slides, showOptionsFunc }) => {
               <>
                 <FaAngleLeft className='left-arrow' onClick={prevSlide} />
                 <FaAngleRight className='right-arrow' onClick={nextSlide} />
-                <img src={slide} alt='travel image' className='image' onClick={() => mintPage()}/>
+                <img src={slide} alt='travel image' className='image' onClick={() => mintPage(slide)}/>
               </>
             )}
           </div>

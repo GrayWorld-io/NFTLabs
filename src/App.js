@@ -41,7 +41,7 @@ export default function App({ wallet, walletData }) {
         <Switch>
           <Route path="/" exact><Home showOptions={showOptions}  showOptionsFunc={setShowOptions} login={login} /></Route>
           <Route path="/create"><Create /></Route>
-          <Route path="/mint/gray_seminar_1"><Mint login={login} wallet={wallet} logout={logout} walletData={walletData}/></Route>
+          <Route path="/mint/gray_seminar"><Mint login={login} wallet={wallet} logout={logout} walletData={walletData}/></Route>
         </Switch>
       </Router>
     </div>

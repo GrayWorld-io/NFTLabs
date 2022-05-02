@@ -6,12 +6,18 @@ import { useHistory } from "react-router-dom";
 
 function Header({ showOptionsFunc }) {
   const history = useHistory();
-  function showApplyDialog() {
-    // let path = '/mint/gray_seminar_1'
+  function showPdfDialog() {
+    // let path = '/mint/gray_seminar'
     // history.push(path);
-    alert("Please email to gray@grayworld.io")
+    // alert("Please email to gray@grayworld.io")
+    window.open('https://drive.google.com/file/d/1IZKCPQs529DuhroQGRtUeOS3MMURFFdC/view?usp=sharing');
   }
-
+  function showVideoDialog() {
+    // let path = '/mint/gray_seminar'
+    // history.push(path);
+    // alert("Please email to gray@grayworld.io")
+    window.open('https://www.youtube.com/watch?v=4Cxb-FYPSKM');
+  }
 
   return (
     <div className="very-near__header section__padding" id="header">
@@ -19,7 +25,10 @@ function Header({ showOptionsFunc }) {
         <h1 style={{ color: "#fff" }}>NFT Labs on <span className="gradient__text" >GrayWorld</span></h1>
         <p>Get started with launching your NFT project with  <span className="gradient__text" >GrayWorld</span></p>
         <div className="very-near__header-content__input">
-          <button type="button" onClick={showApplyDialog}>Apply</button>
+          <button type="button" onClick={showPdfDialog}>Minting Guide(pdf)</button>
+        </div>
+        <div className="very-near__header-content__input">
+          <button type="button" onClick={showVideoDialog}>Minting Guide(Video)</button>
         </div>
       </div>
       <div className='very-near__header-image'>
