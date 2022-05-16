@@ -11,11 +11,13 @@ import nft_9 from '../../../assets/upcoming-assets/nft_9.png'
 export default
 [
   {
+    "project": "Poly Poster",
     "image": [nft_1,nft_2,nft_3],
     "name": "Poly Poster",
     "status": "Coming Soon"
   },
   {
+    "project": "Dudle Lips",
     "image": [nft_4, nft_5, nft_6],
     "name": "Dudle Lips",
     "status": "Coming Soon"

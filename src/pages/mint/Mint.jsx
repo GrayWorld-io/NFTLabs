@@ -11,13 +11,13 @@ import { RiAlignVertically } from 'react-icons/ri';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL
 const toastId = "preventDuplicateId"
-const mintData = {
-    name: "NFT의 모든 것 세미나 수강 기념 NFT",
-    description: "Gray의 NFT 세미나 수강자 대상으로 기념으로 증정하는 NFT입니다."
+let mintData = {
+    name: "코인의 모든 것 세미나 수강 기념 NFT",
+    description: "2022년 Gray의 LG전자 코인의 모든 것 세미나 참에 참석해주신 것을 기념하여 NFT를 발행하여 나눠드립니다. \n 이는 최대 150개(골드50, 실버100)까지만 발행됩니다."
 }
 
 let currentAccount = null;
-const projectName = 'gray_seminar_2';
+let projectName = 'gray_seminar_2';
 const checkMintable = async (accountId) => {
     const checkMintUrl = `${BASE_URL}/mint/checkMintable`
     const checkMintData = {
@@ -33,7 +33,22 @@ const checkMintable = async (accountId) => {
 const Mint = ({ login, wallet, logout, walletData }) => {
     const [nftMedia, setNftMedia] = useState('')
     const [mintable, setMintable] = useState(false);
-
+    const urlPath = window.location.pathname;
+    console.log("MINT");
+    if (urlPath == '/mint/gray_seminar_1') {
+        // alert('1')
+        mintData.name = "NFT의 모든 것 세미나 수강 기념 NFT",
+        mintData.description = "2021년 Gray의 LG전자 NFT의 모든 것 세미나 참에 참석해주신 것을 기념하여 NFT를 발행하여 나눠드립니다.\n 이는 저의 첫 NFT로서 최대 70개(골드20, 실버50)까지만 발행됩니다.\nNFT를 소유하고 계신 분들께 앞으로 저의 행보에 일어날 많은 이벤트들에 우선권을 드리겠습니다."
+        projectName = 'gray_seminar_1';
+    } else if (urlPath == '/mint/gray_seminar_2') {
+        mintData.name = "코인의 모든 것 세미나 수강 기념 NFT",
+        mintData.description = "2022년 Gray의 LG전자 코인의 모든 것 세미나 참에 참석해주신 것을 기념하여 NFT를 발행하여 나눠드립니다. \n 이는 최대 150개(골드50, 실버100)까지만 발행됩니다."
+        projectName = 'gray_seminar_2';
+    } else if (urlPath == '/mint/gray_freshman') {
+        mintData.name = "This is first Gray' NFT",
+        mintData.description = "FreshMan is saver on GrayWorld"
+        projectName = 'gray_freshman';
+    }
     // const nearConfig = getConfig('development')
     if (walletData.pairedAccounts.length > 0) {
         currentAccount = walletData.pairedAccounts[0];
@@ -97,8 +112,21 @@ const Mint = ({ login, wallet, logout, walletData }) => {
             });
             window.location.reload();
         }
+        confirmClaimResult();
     }
 
+    const confirmClaimResult = async () => {
+        const updateClaimStatusUrl = `${BASE_URL}/mint/claim/status`
+        const requestUpdateClaimStatusData = {
+            network: "hedera",
+            project: projectName,
+            accountId: walletData.pairedAccounts[0],
+            status: true
+        }
+        axios.post(updateClaimStatusUrl, requestUpdateClaimStatusData, {
+            headers: { "Content-Type": `application/json` }
+        });
+    }
     // When user clicks mint button
     const handleMint = async () => {
         const getTxUrl = `${BASE_URL}/mint/getTx`
@@ -111,25 +139,31 @@ const Mint = ({ login, wallet, logout, walletData }) => {
             headers: { "Content-Type": `application/json` }
         });
         console.log(res);
-        const rawTx = res.data.tx;
-        if (rawTx == false) {
+        const result = res.data.result;
+        if (result.code == 301) {
+            alert("WhiteList에 없습니다.\nEmail: gray@grayworld.io \nDiscord: https://discord.com/channels/960074482863730729/967525879267864697\n로 문의주세요.")
+            return;
+        } else if (result.code.code == 101) {
             alert('Minting은 1개만 가능합니다');
             return;
+        } else if (result.code.code == 100) {
+            const rawTx = result.tx;
+            const tx = buildTransaction(rawTx, walletData, true);
+            const signedTx = await wallet.sendTransaction(walletData.topic, tx);
+            const requestMintUrl = `${BASE_URL}/mint/sendTx`
+            const sendMintData = {
+                network: "hedera",
+                project: projectName,
+                accountId: walletData.pairedAccounts[0],
+                signedTx: signedTx
+            }
+            await axios.post(requestMintUrl, sendMintData, {
+                headers: { "Content-Type": `application/json` }
+            });
+            // const mintResult = res.data.result;
+            window.location.reload();
         }
-        const tx = buildTransaction(rawTx, walletData, true);
-        const signedTx = await wallet.sendTransaction(walletData.topic, tx);
-        const requestMintUrl = `${BASE_URL}/mint/sendTx`
-        const sendMintData = {
-            network: "hedera",
-            project: projectName,
-            accountId: walletData.pairedAccounts[0],
-            signedTx: signedTx
-        }
-        await axios.post(requestMintUrl, sendMintData, {
-            headers: { "Content-Type": `application/json` }
-        });
-        // const mintResult = res.data.result;
-        window.location.reload();
+        
     }
 
     return (
@@ -168,7 +202,7 @@ const Mint = ({ login, wallet, logout, walletData }) => {
                 </div>
             ) : (
                 <div className='very-near__mint-image'>
-                    <img src='https://labs.grayworld.io:9092/allcoin-gold.gif' alt={mintData.name} height='560px' width='560px' />
+                    <img src='https://cloudflare-ipfs.com/ipfs/bafybeigfzgkephmjllnrthwtgkbptejv7qupstacsiavq2u5jgcsmtjzdm/images/1.png' alt={mintData.name} height='560px' width='560px' />
                 </div>
             )}
             <ToastContainer

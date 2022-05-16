@@ -1,5 +1,3 @@
-import { Transaction, TransactionId } from "@hashgraph/sdk"
-
 import { HashConnect, HashConnectTypes, MessageTypes } from 'hashconnect';
 
 let hashconnect;
@@ -94,7 +92,7 @@ export async function initializeHashPackWallet() {
     
     hashconnect.findLocalWallets();
     //generate a pairing string, which you can display and generate a QR code from
-    saveData.pairingString = hashconnect.generatePairingString(state, "mainnet", false);
+    saveData.pairingString = hashconnect.generatePairingString(state, "testnet", false);
     status = "Connected";
   } else {
     await hashconnect.init(appMetadata, saveData.privateKey);

@@ -7,6 +7,9 @@ import nft_6 from '../../../assets/header-assets/6.png'
 import gold from '../../../assets/gray-assets/seminar/allcoin-gold.gif'
 import silver from '../../../assets/gray-assets/seminar/allcoin-silver.gif'
 
+import freshman1 from '../../../assets/gray-assets/freshman/1.png'
+import freshman2 from '../../../assets/gray-assets/freshman/2.png'
+
 // export const SliderData = 
 //   [
 //     nft_4,
@@ -18,6 +21,6 @@ import silver from '../../../assets/gray-assets/seminar/allcoin-silver.gif'
 //   ];
 export const SliderData = 
   [
-    silver,
-    gold
+    freshman1,
+    freshman2
   ];

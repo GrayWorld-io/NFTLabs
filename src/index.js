@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { MetamaskStateProvider } from "use-metamask";
 import App from './App'
 
 import {initializeHashPackWallet} from './wallet/hedera/hashpack'
@@ -98,10 +99,15 @@ export async function initializeWallet() {
 window.nearInitPromise = initializeWallet()
   .then(({ }) => {
     ReactDOM.render(
+      <MetamaskStateProvider>
+
       <App
         wallet={hashconnect}
         walletData={saveData}
-      />,
+      />
+      </MetamaskStateProvider>
+
+      ,
       document.querySelector('#root')
     )
   })

@@ -5,6 +5,7 @@ import { SliderData } from './SliderData';
 import { useHistory } from "react-router-dom";
 
 function Header({ showOptionsFunc }) {
+  const CurrentProject = 'gray_freshman';
   const history = useHistory();
   function showPdfDialog() {
     // let path = '/mint/gray_seminar'
@@ -32,7 +33,7 @@ function Header({ showOptionsFunc }) {
         </div>
       </div>
       <div className='very-near__header-image'>
-        <ImageSlider slides={SliderData} showOptionsFunc={showOptionsFunc}/>
+        <ImageSlider project={CurrentProject} slides={SliderData} showOptionsFunc={showOptionsFunc}/>
       </div>
     </div>
   )

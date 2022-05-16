@@ -26,10 +26,9 @@ function Navbar({ showOptions, showOptionsFunc }) {
     []
   )
 
-  function homePage() {
-    let path = '/'
+  function goMyNFT() {
+    let path = '/my'
     history.push(path);
-    showOptionsFunc(true)
   }
 
   function Menu() {
@@ -54,6 +53,7 @@ function Navbar({ showOptions, showOptionsFunc }) {
         <>
               <p><a href="#gray-nft">Gray NFT</a></p>
               <p><a href="#labs-nft">Labs NFT</a></p>
+              <p><a href="my-nft">My NFT</a></p>
               <p><a href="#apply">Apply</a></p>
             </>
       </>

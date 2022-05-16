@@ -1,0 +1,29 @@
+
+.content {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-right: 2rem;
+  }
+  
+.content img {
+    width: 50px;
+    height: 50px;
+}
+
+
+.content h1 {
+  font-family: var(--font-family);
+  font-size: 2rem;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+.content h2 {
+  font-family: var(--font-family);
+  font-size: 1rem;
+  margin-bottom: 24px;
+  color: #fff;
+}
