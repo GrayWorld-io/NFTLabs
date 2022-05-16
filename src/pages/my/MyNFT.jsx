@@ -51,6 +51,10 @@ function MyNFT({ login, wallet, logout, walletData }) {
   const mintETH = async (item) => {
     let web3 = new Web3(window.ethereum);
     let signature = null;
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: web3.utils.toHex(4) }]
+    });
     const account = await window.ethereum.request({ method: "eth_requestAccounts" });
     const getMessageUrl = `${BRIDGE_BASE_URL}/bridge/getMessage`
     const requestEthMessageData = {
